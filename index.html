@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  	<head>
+    	<meta charset="utf-8">
+    	<title></title>
+    	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    	<meta name="description" content="">
+    	<meta name="author" content="">
+
+    	<!-- Le styles -->
+    	<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    	<link href="bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+    	<link href="index.css" rel="stylesheet">
+
+	</head>
+	<body>
+
+		<div class="container">
+			<h1>Using popover</h1>
+
+			<ul data-bind="foreach: Foos">
+
+				<li>
+				<a href="#" id="menu1"
+					rel="contextmenu" data-target="contextmenu" data-original-title="Actions"
+					data-bind="click: showPopover">Click me</a>
+					<div id="contextmenu" class="hide">
+						<div class="btn-group">
+							<a href="#" class="btn" data-bind="click: copy">Copy</a>
+							<a href="#" class="btn" data-bind="click: remove">Remove</a>
+							<a href="#" class="btn" data-bind="click: echo">Echo</a>
+						</div>
+					</div>
+					<span data-bind="text: Name"></span>
+				</li>
+			</ul>
+
+			<div class="navbar">
+    			<div class="navbar-inner">
+      				<div class="container">
+        				<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          					<span class="icon-bar"></span>
+          					<span class="icon-bar"></span>
+          					<span class="icon-bar"></span>
+        				</a>
+        				<a class="brand" href="#">Project name</a>
+        				<div class="nav-collapse">
+          					<ul class="nav">
+            					<li class="dropdown">
+              					<a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              					<ul class="dropdown-menu">
+                					<li><a href="#">Action</a></li>
+                					<li><a href="#">Another action</a></li>
+                					<li><a href="#">Something else here</a></li>
+                					<li class="divider"></li>
+                					<li class="nav-header">Nav header</li>
+                					<li><a href="#">Separated link</a></li>
+                					<li><a href="#">One more separated link</a></li>
+              					</ul>
+            					</li>
+          					</ul>
+        				</div><!-- /.nav-collapse -->
+      				</div>
+    			</div><!-- /navbar-inner -->
+  			</div>
+
+		</div>
+
+		<script type="text/javascript" src="js/jquery-1.7.1.js"></script>
+		<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+		<script type="text/javascript" src="js/knockout-2.0.0.debug.js"></script>
+		<script type="text/javascript" src="index.js"></script>
+		<script type="text/javascript">
+			function showPopover(data, ev) {
+				var action = $(ev.currentTarget);
+
+				action.contextmenu({
+					trigger: 'manual',
+					placement: 'top',
+					//*
+					content: function() {
+						// console.log('content:', this, ' arguments:', arguments);
+						var target = $(this).data().target;
+						return $('#' + target).html();
+					}
+					//*/
+				});
+				action.contextmenu('show');
+
+				var thePopover = action.data().contextmenu;
+				$('.contextmenu-content > * > *', thePopover.$tip[0]).remove();
+				var target = action.data().target;
+				// $('#' + target).clone(true).removeClass('hide').appendTo('.popover-content > *', thePopover.$tip[0]);
+				$('.contextmenu-content > *', thePopover.$tip[0])
+					.replaceWith($('#' + target, action.parents().first()).clone(true).removeClass('hide'));
+
+				$('a.btn', thePopover.$tip[0]).each(function(ix, aLink) {
+					$(aLink).on('click', function() {
+						// console.log('link.click');
+						$(thePopover.$element[0]).contextmenu('hide');
+					});
+				});
+
+			}
+
+			$(document).ready(function() {
+
+				//*
+				function Foo(parent, name) {
+					var $$ = this, that = parent;
+					$$.Name = name;
+					$$.echo = function (newData) {
+						console.log(newData);
+					};
+					$$.copy = function(newData) {
+						that.Foos.push(new Foo(that, newData.Name + that.Foos().length));
+					};
+					$$.remove = function() {}
+				}
+				var vm = { Foos: ko.observableArray([]) }
+				vm.Foos.push(new Foo(vm, "First"));
+				vm.Foos.push(new Foo(vm, "Second"));
+				ko.applyBindings(vm);
+				//*/
+
+			});
+		</script>
+	</body>
+</html>
