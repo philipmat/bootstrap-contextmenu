@@ -53,8 +53,12 @@
 
   })
 
+  function closeContextMenus() {
+  	  // console.log(this, arguments);
+  	  $('.contextmenu').remove();
+  }
 
- /* POPOVER PLUGIN DEFINITION
+ /* CONTEXT PLUGIN DEFINITION
   * ======================= */
 
   $.fn.contextmenu = function (option) {
@@ -74,5 +78,11 @@
   , content: ''
   , template: '<div class="contextmenu"><div class="arrow"></div><div class="contextmenu-inner"><div class="contextmenu-content"><p></p></div></div></div>'
   })
+  
+  $(function() {
+  	  $('html').on('click.contextmenu.data-api', closeContextMenus);
+  	  $('body')
+  	  	.on('click.contextmenu.data-api', closeContextMenus);
+  });
 
 }(window.jQuery);
