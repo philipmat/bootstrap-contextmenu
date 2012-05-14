@@ -91,33 +91,13 @@
 				ev.stopPropagation();
 				var action = $(ev.currentTarget);
 
+				
+				/*
 				action.contextmenu({
-					trigger: 'manual',
 					placement: 'top',
-					//*
-					content: function() {
-						// console.log('content:', this, ' arguments:', arguments);
-						var target = $(this).data().target;
-						return $('#' + target).html();
-					}
-					//*/
 				});
+				*/
 				action.contextmenu('show');
-
-				var thePopover = action.data().contextmenu;
-				$('.contextmenu-content > * > *', thePopover.$tip[0]).remove();
-				var target = action.data().target;
-				// $('#' + target).clone(true).removeClass('hide').appendTo('.popover-content > *', thePopover.$tip[0]);
-				$('.contextmenu-content > *', thePopover.$tip[0])
-					.replaceWith($('#' + target, action.parents().first()).clone(true).removeClass('hide'));
-
-				$('a.btn', thePopover.$tip[0]).each(function(ix, aLink) {
-					$(aLink).on('click', function() {
-						// console.log('link.click');
-						$(thePopover.$element[0]).contextmenu('hide');
-					});
-				});
-
 			}
 
 			$(document).ready(function() {
