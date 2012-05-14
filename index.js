@@ -19,11 +19,9 @@
 
 		constructor: ContextMenu
 
-		, _show: $.fn.tooltip.Constructor.prototype.show
-
 		, show: function() {
-			this.closeAllMenus();
-			this._show();
+			this.closeAllMenus()
+
 			var $tip
 				, inside
 				, pos
@@ -95,11 +93,8 @@
 
 			var close = this.closeAllMenus;
 			$('.btn', $tip).each(function(ix, aLink) {
-				$(aLink).on('click', function() {
-					// console.log('link.click');
-					close();
-				});
-			});
+				$(aLink).on('click', function() { close() })
+			})
 
 			$tip.removeClass('fade top bottom left right in')
 		}
@@ -116,7 +111,7 @@
 			return this.$tip
 		}
 		, closeAllMenus: function() {
-			$('.contextmenu').remove();
+			$('.contextmenu').remove()
 		}
 	})
 
@@ -144,9 +139,9 @@
 
 	$(function() {
 	   $('html')
-		   .on('click.contextmenu.data-api', ContextMenu.prototype.closeAllMenus);
+		   .on('click.contextmenu.data-api', ContextMenu.prototype.closeAllMenus)
 	   $('body')
-		   .on('click.contextmenu.data-api', ContextMenu.prototype.closeAllMenus);
-	});
+		   .on('click.contextmenu.data-api', ContextMenu.prototype.closeAllMenus)
+	})
 
 }(window.jQuery);
